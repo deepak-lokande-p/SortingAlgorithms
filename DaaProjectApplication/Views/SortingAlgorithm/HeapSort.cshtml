@@ -1,0 +1,170 @@
+﻿@{
+    ViewBag.Title = "HeapSort";
+}
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Sorting Algorithms</li>
+            <li class="breadcrumb-item active">Heap Sort</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <p style="font-weight:bold">Heap Sort: </p>
+                    <hr />
+                    <p>Input the Elements:</p>
+                    <div class="form-group">
+                        <textarea class="form-control" style="resize: none;" name="textarea" id="textarea" cols="30" rows="2"
+                                  oninput="this.value = this.value.replace(/[^0-9,]/g, '').replace(/(\..*)\./g, '$1');" 
+                                  placeholder="Enter Comma Separated Numbers"></textarea>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-primary px-3 ml-0" id="noSubmit">Submit</button>
+                        <button class="btn btn-primary px-3 ml-3" id="clearVal">Clear</button>
+                    </div>
+                    <div style="margin-top:15px">
+                        <p style="font-weight:bold">Entered Numbers:</p>
+                        <p id="inputNos"></p>
+                    </div>
+                    <hr />
+                    <p>Sort the Elements using Heap Sort</p>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-primary px-3 ml-0" id="heapSort">Sort</button>
+                    </div>
+
+                    <hr />
+                    <p>Result:</p>
+                    <p>The Execution time is: <span id="performance"></span></p>
+                    <span id="errMssg"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+    $(document).on("wheel", "input[type=number]", function (e) {
+        $(this).blur();
+    });
+
+    $('#noSubmit').on('click', function () {
+        //alert();
+        //debugger;
+        $('#inputNos').empty();
+        var textareaVal = $('#textarea').val();
+        if (textareaVal == "") {
+            alert("Input a Number")
+        }
+        else {
+            $('#inputNos').append(textareaVal)
+        }
+    })
+    $('#clearVal').on('click', function () {
+        //debugger;
+        $('#textarea').val("");
+        $('#inputNos').empty();
+        $('#searchElement').val("");
+        $('#errMssg').empty();
+        $('#performance').empty();
+    })
+
+    /*Heap Sort Algorithm Based on Click Function*/
+    $('#heapSort').on('click', function () {
+        debugger;
+        $('#errMssg').empty()
+        $('#performance').empty();
+        var textareaVal = $('#textarea').val();
+        var listData = new Array();
+        listData = textareaVal.split(',').map(Number);
+
+        /*Heap Sort Algorithm*/
+        var result = "";
+        var n = listData.length;
+        var t0 = performance.now()
+        HeapSort(listData);
+        var t1 = performance.now()
+        if (result == -1) {
+            $('#errMssg').text("**Element is not present in array").css("color", "#ff3333")
+        }
+        else
+        {
+            $('#errMssg').append("<br />" + 'Element found is: ')
+            $('#errMssg').append(
+                $('<div/>')
+                    .attr("id", "newDiv")
+                    .addClass("btn mb-1 btn-outline-info")
+                    .append("<span/>")
+                    .text(listData)
+            );
+            $('#performance').append(t1 - t0);
+        }
+    })
+
+    function HeapSort(listData)
+    {
+        debugger;
+        var n = listData.length;
+        for (var i = n / 2 - 1; i >= 0; i--)
+        {
+            Heapify(listData, n, i);
+        }
+
+        for (var i = n - 1; i > 0; i--)
+        {
+            // Move current root to end
+            var temp = listData[0];
+            listData[0] = listData[i];
+            listData[i] = temp;
+
+            // call max heapify on the reduced heap
+            Heapify(listData, i, 0);
+        }
+    }
+
+    function Heapify(listData, n, i)
+    {
+        debugger;
+        var largest = i; // Initialize largest as root
+        var l = 2 * i + 1; // left = 2*i + 1
+        var r = 2 * i + 2; // right = 2*i + 2
+
+        // If left child is larger than root
+        if (l < n && listData[l] > listData[largest])
+            largest = l;
+
+        // If right child is larger than largest so far
+        if (r < n && listData[r] > listData[largest])
+            largest = r;
+
+        // If largest is not root
+        if (largest != i) {
+            var swap = listData[i];
+            listData[i] = listData[largest];
+            listData[largest] = swap;
+
+            // Recursively heapify the affected sub-tree
+            Heapify(listData, n, largest);
+        }
+    }
+</script>

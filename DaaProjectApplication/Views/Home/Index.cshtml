@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Dashboard</li>
+            <li class="breadcrumb-item active">Home</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Small Input Size</h4>
+                    <div id="flotBar1" class="flot-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Large Input Size</h4>
+                    <div id="flotBar2" class="flot-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Comparison Chart</h4>
+                    <div id="flotBar3" class="flot-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Searching Algorithms</h4>-->
+                    @*<div id="flotBar1" class="flot-chart"></div>*@
+                <!--</div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Bar Chart</h4>-->
+                    @*<div id="flotBar2" class="flot-chart"></div>*@
+                <!--</div>
+            </div>
+        </div>
+    </div>-->
+</div>
+
+<script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
+<script>   
+    anychart.onDocumentReady(function () {
+        var smallData = {
+            header: ["Algorithms", "Run Time"],
+            rows: [
+                ["Merge Sort", 0.28000],
+                ["Heap Sort", 0.33500],
+                ["Quick Sort", 0.27499],
+                ["3 Median Quick Sort", 0.17500],
+                ["Insertion Sort", 0.02999],
+                ["Selection Sort", 0.07999],
+                ["Bubble Sort", 0.02999]
+            ]
+        };
+
+        // create the chart
+        var chart = anychart.column();
+
+        // add the data
+        chart.data(smallData);
+
+        // set the chart title
+        chart.title("Running Time With Small Input Size");
+
+        // draw
+        chart.container("flotBar1");
+
+        chart.draw();
+
+        //Large Input Data
+        var largeData = {
+            header: ["Algorithms", "Run Time"],
+            rows: [
+                ["Merge Sort", 0.11500],
+                ["Heap Sort", 0.11499],
+                ["Quick Sort", 0.06000],
+                ["3 Median Quick Sort", 0.08500],
+                ["Insertion Sort", 0.02500],
+                ["Selection Sort", 0.02999],
+                ["Bubble Sort", 0.03500]
+            ]
+        };
+
+        // create the chart
+        var chart = anychart.column();
+
+        // add the data
+        chart.data(largeData);
+        chart.title("Running Time With Large Input Size");
+
+        chart.container("flotBar2")
+        chart.draw();
+
+        //Very Large Input Data
+        var vryLargeData = {
+            header: ["Algorithms", "Run Time"],
+            rows: [
+                ["Merge Sort", 0.28000, 0.11500, 0.54999],
+                ["Heap Sort", 0.33500, 0.11499, 0.17499],
+                ["Quick Sort", 0.27499, 0.06000, 0.09999],
+                ["3 Median Quick Sort", 0.17500, 0.08500, 0.20500],
+                ["Insertion Sort", 0.02999, 0.02500, 0.15999],
+                ["Selection Sort", 0.07999, 0.02999, 0.11000],
+                ["Bubble Sort", 0.02999, 0.03500, 0.21500]
+            ]
+        };
+
+        // create the chart
+        var chart = anychart.column();
+
+        // add the data
+        chart.data(vryLargeData);
+        chart.title("Running Time Comparison With Different Input Sizes");
+
+        chart.container("flotBar3")
+        chart.draw();
+    });
+</script>

@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewBag.Title = "SplQuickSort";
+}
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Sorting Algorithms</li>
+            <li class="breadcrumb-item active">3 Median Quick Sort</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <p style="font-weight:bold">3 Median Quick Sort: </p>
+                    <hr />
+                    <p>Input the Elements:</p>
+                    <div class="form-group">
+                        <textarea class="form-control" style="resize: none;" name="textarea" id="textarea" cols="30" rows="2"
+                                  oninput="this.value = this.value.replace(/[^0-9,]/g, '').replace(/(\..*)\./g, '$1');" 
+                                  placeholder="Enter Comma Separated Numbers"></textarea>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-primary px-3 ml-0" id="noSubmit">Submit</button>
+                        <button class="btn btn-primary px-3 ml-3" id="clearVal">Clear</button>
+                    </div>
+                    <div style="margin-top:15px">
+                        <p style="font-weight:bold">Entered Numbers:</p>
+                        <p id="inputNos"></p>
+                    </div>
+                    <hr />
+                    <p>Sort the Elements using 3 Median Quick Sort</p>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-primary px-3 ml-0" id="splQuickSort">Sort</button>
+                    </div>
+
+                    <hr />
+                    <p>Result:</p>
+                    <p>The Execution time is: <span id="performance"></span></p>
+                    <span id="errMssg"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+    $(document).on("wheel", "input[type=number]", function (e) {
+        $(this).blur();
+    });
+
+    $('#noSubmit').on('click', function () {
+        //alert();
+        //debugger;
+        $('#inputNos').empty();
+        var textareaVal = $('#textarea').val();
+        if (textareaVal == "") {
+            alert("Input a Number")
+        }
+        else {
+            $('#inputNos').append(textareaVal)
+        }
+    })
+    $('#clearVal').on('click', function () {
+        //debugger;
+        $('#textarea').val("");
+        $('#inputNos').empty();
+        $('#searchElement').val("");
+        $('#errMssg').empty();
+        $('#performance').empty();
+    })
+
+    /*3 Median Quick Sort Algorithm Based on Click Function*/
+    $('#splQuickSort').on('click', function () {
+        debugger;
+        $('#errMssg').empty()
+        $('#performance').empty();
+        //var elementToBeSearched = $('#searchElement').val();
+        var textareaVal = $('#textarea').val();
+        var listData = new Array();
+        listData = textareaVal.split(',').map(Number);
+
+        /*3 Median Quick Sort Algorithm*/
+        var t0 = performance.now()
+        var n = listData.length;
+        var low = 0;
+        var high = n - 1;
+        ThreeMedianQuickSort(listData,low,high);
+        var t1 = performance.now()
+
+        $('#errMssg').append("<br />" + 'Element found is: ')
+        $('#errMssg').append(
+            $('<div/>')
+                .attr("id", "newDiv")
+                .addClass("btn mb-1 btn-outline-info")
+                .append("<span/>")
+                .text(listData)
+        );
+        $('#performance').append(t1 - t0);
+    })
+    function GetMedian(left, right, middle)
+    {
+        if ((left - right) * (middle - left) >= 0)
+             return left
+        else if((right - left) * (middle - right) >= 0)
+            return right
+        else
+          return middle
+    }
+    
+    function Partition(listData, low, high)
+    {
+        //debugger;
+        var left = listData[low]
+        var right = listData[high - 1]
+        var length = high - low
+
+        if (length % 2 == 0)
+            var middle = listData[Math.floor(low + (length / 2) - 1)]
+        else
+            var middle = listData[Math.floor(low + length / 2)]
+        pivot = GetMedian(left, right, middle)
+
+        debugger;
+        //Store pivot index
+        pivotIndex = listData.indexOf(pivot)
+
+        //Swap pivot
+        listData[pivotIndex] = listData[low]
+        listData[low] = pivot
+
+        var i = low + 1
+        
+        for (var j = low; j <= high; j++)
+        {
+            if (listData[j] < pivot) {
+                temp = listData[j]
+                listData[j] = listData[i]
+                listData[i] = temp
+                i += 1
+            }
+        }    
+        var leftendval = listData[low]
+        listData[low] = listData[i - 1]
+        listData[i - 1] = leftendval
+        return i - 1
+    }
+    
+    function ThreeMedianQuickSort(listData, low, high)
+    {
+        if (low < high)
+        {
+            newPivotIndex = Partition(listData, low, high)
+            ThreeMedianQuickSort(listData, low, newPivotIndex)
+            ThreeMedianQuickSort(listData, newPivotIndex + 1, high)
+        }
+        return listData
+    }
+</script>

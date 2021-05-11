@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "RegularQuickSort";
+}
+
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Sorting Algorithms</li>
+            <li class="breadcrumb-item active">Quick Sort</li>
+        </ol>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <p style="font-weight:bold">Quick Sort: </p>
+                    <hr />
+                    <p>Input the Elements:</p>
+                    <div class="form-group">
+                        <textarea class="form-control" style="resize: none;" name="textarea" id="textarea" cols="30" rows="2"
+                                  oninput="this.value = this.value.replace(/[^0-9,]/g, '').replace(/(\..*)\./g, '$1');" 
+                                  placeholder="Enter Comma Separated Numbers"></textarea>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-primary px-3 ml-0" id="noSubmit">Submit</button>
+                        <button class="btn btn-primary px-3 ml-3" id="clearVal">Clear</button>
+                    </div>
+                    <div style="margin-top:15px">
+                        <p style="font-weight:bold">Entered Numbers:</p>
+                        <p id="inputNos"></p>
+                    </div>
+                    <hr />
+                    <p>Sort the Elements using Quick Sort</p>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-primary px-3 ml-0" id="quickSort">Sort</button>
+                    </div>
+
+                    <hr />
+                    <p>Result:</p>
+                    <p>The Execution time is: <span id="performance"></span></p>
+                    <span id="errMssg"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+    $(document).on("wheel", "input[type=number]", function (e) {
+        $(this).blur();
+    });
+
+    $('#noSubmit').on('click', function () {
+        //alert();
+        //debugger;
+        $('#inputNos').empty();
+        var textareaVal = $('#textarea').val();
+        if (textareaVal == "") {
+            alert("Input a Number")
+        }
+        else {
+            $('#inputNos').append(textareaVal)
+        }
+    })
+    $('#clearVal').on('click', function () {
+        //debugger;
+        $('#textarea').val("");
+        $('#inputNos').empty();
+        $('#searchElement').val("");
+        $('#errMssg').empty();
+        $('#performance').empty();
+    })
+
+    /*Quick Sort Algorithm Based on Click Function*/
+    $('#quickSort').on('click', function () {
+        debugger;
+        $('#errMssg').empty()
+        $('#performance').empty();
+        var textareaVal = $('#textarea').val();
+        var listData = new Array();
+        listData = textareaVal.split(',').map(Number);
+
+    /*Quick Sort Algorithm*/
+        var t0 = performance.now()
+        var n = listData.length;
+        var low = 0;
+        var high = n - 1;
+        QuickSort(listData,low,high);
+        var t1 = performance.now()
+
+        $('#errMssg').append("<br />" + 'Element found is: ')
+        $('#errMssg').append(
+            $('<div/>')
+                .attr("id", "newDiv" + i)
+                .addClass("btn mb-1 btn-outline-info")
+                .append("<span/>")
+                .text(listData)
+        );
+        $('#performance').append(t1 - t0);
+    })
+    function QuickSort(listData,low,high)
+    {
+        debugger;
+        if (low < high)
+        {
+            /* pi is partitioning index, arr[pi] is now
+               at right place */
+            pi = Partition(listData, low, high);
+
+            QuickSort(listData, low, pi - 1);  // Before pi
+            QuickSort(listData, pi + 1, high); // After pi
+        }
+    }
+
+    function Partition(listData, low, high)
+    {
+        debugger;
+        pivot = listData[high];
+
+        i = (low - 1)  // Index of smaller element 
+        for (j = low; j <= high - 1; j++) {
+            // If current element is smaller than the pivot
+            if (listData[j] < pivot)
+            {
+                i++;    // increment index of smaller element
+                var temp;
+                temp = listData[i]; 
+                listData[i] = listData[j]
+                listData[j] = temp;
+            }
+        }
+        var tempNew;
+        tempNew = listData[i + 1];
+        listData[i + 1] = listData[high];
+        listData[high] = tempNew;
+        return (i + 1)
+    }
+</script>
